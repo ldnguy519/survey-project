@@ -11,10 +11,10 @@ document.getElementById("survey-form").addEventListener("submit", function(event
     // Store the first completed survey in localStorage
     if (!localStorage.getItem("male") && gender === "male") {
         localStorage.setItem("male", JSON.stringify(selectedValues));
-        generateShareableLink("female"); // Prompt female participant
+        promptSecondSurvey("female");
     } else if (!localStorage.getItem("female") && gender === "female") {
         localStorage.setItem("female", JSON.stringify(selectedValues));
-        generateShareableLink("male"); // Prompt male participant
+        promptSecondSurvey("male");
     }
 
     // If both surveys are completed, compare results
@@ -23,42 +23,21 @@ document.getElementById("survey-form").addEventListener("submit", function(event
     }
 });
 
-// Function to generate a shareable link for the opposite gender
-function generateShareableLink(oppositeGender) {
-    const baseUrl = window.location.href.split('?')[0];
-    const shareableLink = `${baseUrl}?gender=${oppositeGender}`;
-
+// Function to prompt the second survey immediately after the first
+function promptSecondSurvey(oppositeGender) {
     document.body.innerHTML = `
         <div style="text-align: center; font-family: Arial, sans-serif;">
-            <h2>Survey submitted!</h2>
-            <p>Now, share this link with a ${oppositeGender} participant:</p>
-            <input type="text" id="shareable-link" value="${shareableLink}" readonly style="width: 80%; padding: 10px; font-size: 16px;">
-            <button onclick="copyLink()" style="padding: 10px; margin-top: 10px;">Copy Link</button>
-            <button onclick="sendSMS('${shareableLink}')" style="padding: 10px; margin-top: 10px;">Forward via SMS</button>
-            <button onclick="reloadSurvey()" style="padding: 10px; margin-top: 10px;">Start New Survey</button>
+            <h2>First survey completed!</h2>
+            <p>Now, the ${oppositeGender} participant must complete the survey.</p>
+            <button onclick="startSecondSurvey('${oppositeGender}')" style="padding: 10px; margin-top: 10px;">Start ${oppositeGender} Survey</button>
         </div>
     `;
 }
 
-// Function to copy link to clipboard
-function copyLink() {
-    const linkInput = document.getElementById("shareable-link");
-    linkInput.select();
-    document.execCommand("copy");
-    alert("Link copied to clipboard!");
-}
-
-// Function to send link via SMS
-function sendSMS(link) {
-    const phoneNumber = prompt("Enter phone number to send SMS:");
-    if (phoneNumber) {
-        window.open(`sms:${phoneNumber}?body=Survey Link: ${link}`, "_self");
-    }
-}
-
-// Function to restart survey after submission
-function reloadSurvey() {
-    window.location.href = window.location.href.split('?')[0];
+// Function to start second survey immediately
+function startSecondSurvey(gender) {
+    localStorage.setItem("currentSurvey", gender);
+    window.location.href = window.location.href.split('?')[0]; // Reload for new survey
 }
 
 // Function to compare Male vs. Female responses once both surveys are completed
@@ -99,6 +78,20 @@ function compareSelections() {
         matchSummary += "</ul>";
     }
 
-    // Display comparison results
-    document.body.innerHTML = matchSummary;
+    // Display comparison results with a "Go Back to Start" button
+    document.body.innerHTML = `
+        ${matchSummary}
+        <button onclick="resetSurvey()" style="padding: 10px; margin-top: 20px;">Go Back to Start</button>
+    `;
 }
+
+// Function to reset survey and clear all stored data
+function resetSurvey() {
+    localStorage.clear();
+    window.location.href = window.location.href.split('?')[0]; // Reload for a fresh start
+}
+
+// Clear storage when the browser is closed
+window.addEventListener("beforeunload", function() {
+    localStorage.clear();
+});
