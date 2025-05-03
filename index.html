@@ -4,100 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Survey</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Survey</h2>
+    <h2 id="survey-title">Survey for Male Participant</h2>
     <form id="survey-form">
-        <!-- Gender Selection -->
         <div class="section">
-            <div class="section-title">Are you male or female?</div>
-            <label><input type="radio" name="gender" value="male" onclick="showSections()"> Male</label>
-            <label><input type="radio" name="gender" value="female" onclick="showSections()"> Female</label>
+            <div class="section-title">Section 1</div>
+            <label><input type="checkbox" id="sec1_A"> A</label>
+            <label><input type="checkbox" id="sec1_B"> B</label>
+            <label><input type="checkbox" id="sec1_C"> C</label>
         </div>
 
-        <!-- Male-Specific Sections -->
-        <div id="male-sections" class="hidden">
-            <div class="section">
-                <div class="section-title">Foreplay-Give (Male)</div>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Lick Pussy</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Finger Pussy</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Vibrator</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Nipple Play</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Lick Butt</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Finger Butt</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Butt Toys</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> 69</label>
-                <label><input type="checkbox" name="male_Foreplay-Give"> Massage</label>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Foreplay-Receive (Male)</div>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Handjob</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Blowjob</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Footjob</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Tittyfuck</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Nipple PLay</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Lick Butt</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Finger Butt</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Butt Toys</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> 69</label>
-                <label><input type="checkbox" name="male_Foreplay-Receive"> Massage</label>
-            </div>
-
-            <div class="section">
-                <div class="section-title">In the mood for the following? (Male)</div>
-                <label><input type="checkbox" name="male_In_the_mood_for_the_following?"> Pegging</label>
-                <label><input type="checkbox" name="male_In_the_mood_for_the_following?"> Anal Sex</label>
-            </div>
+        <div class="section">
+            <div class="section-title">Section 2</div>
+            <label><input type="checkbox" id="sec2_J"> J</label>
+            <label><input type="checkbox" id="sec2_K"> K</label>
+            <label><input type="checkbox" id="sec2_L"> L</label>
         </div>
 
-        <!-- Female-Specific Sections -->
-        <div id="female-sections" class="hidden">
-            <div class="section">
-                <div class="section-title">Foreplay-Receive (Female)</div>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Lick Pussy</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Finger Pussy</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Vibrator</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Nipple Play</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Lick Butt</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Finger Butt</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Butt Toys</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> 69</label>
-                <label><input type="checkbox" name="female_Foreplay-Receive"> Massage</label>
-            </div>
-
-            <div class="section">
-                <div class="section-title">Foreplay-Give (Female)</div>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Handjob</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Blowjob</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Footjob</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Tittyfuck</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Nipple Play</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Lick Butt</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Finger Butt</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Butt Toys</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> 69</label>
-                <label><input type="checkbox" name="female_Foreplay-Give"> Massage</label>
-            </div>
-
-            <div class="section">
-                <div class="section-title">In the mood for the following? (Female)</div>
-                <label><input type="checkbox" name="female_In_the_mood_for_the_following?"> Pegging</label>
-                <label><input type="checkbox" name="female_In_the_mood_for_the_following?"> Anal Sex</label>
-            </div>
+        <div class="section">
+            <div class="section-title">Section 3</div>
+            <label><input type="checkbox" id="sec3_N"> N</label>
+            <label><input type="checkbox" id="sec3_O"> O</label>
         </div>
 
         <button type="submit">Submit</button>
     </form>
 
-    <script>
-        function showSections() {
-            const gender = document.querySelector('input[name="gender"]:checked').value;
-            document.getElementById("male-sections").style.display = gender === "male" ? "block" : "none";
-            document.getElementById("female-sections").style.display = gender === "female" ? "block" : "none";
-        }
-    </script>
-    <script src="script.js"></script> <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
 </body>
 </html>
