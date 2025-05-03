@@ -1,5 +1,5 @@
 document.getElementById("survey-form").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent default submission
+    event.preventDefault();
 
     const gender = document.querySelector('input[name="gender"]:checked');
     if (!gender) {
@@ -9,11 +9,15 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 
     const selectedValues = {};
     document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
-        selectedValues[checkbox.id] = true; // Use checkbox ID for uniqueness
+        selectedValues[checkbox.id] = true;
     });
 
     localStorage.setItem(gender.value, JSON.stringify(selectedValues));
 
+    // Store that the first survey is complete
+    localStorage.setItem("completedSurvey", gender.value);
+
+    // Determine next step
     if (!localStorage.getItem("male") || !localStorage.getItem("female")) {
         startSecondSurvey(gender.value === "male" ? "female" : "male");
     } else {
@@ -23,16 +27,17 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 
 // Retain gender selection after refresh
 window.addEventListener("load", function() {
-    const savedGender = localStorage.getItem("currentSurvey");
-    if (savedGender) {
-        document.querySelector(`input[name="gender"][value="${savedGender}"]`).checked = true;
+    const currentSurvey = localStorage.getItem("currentSurvey");
+    if (currentSurvey) {
+        document.querySelector(`input[name="gender"][value="${currentSurvey}"]`).checked = true;
         showSections();
     }
 });
 
-function startSecondSurvey(gender) {
-    localStorage.setItem("currentSurvey", gender);
-    location.reload(); // Reload without losing progress
+function startSecondSurvey(nextGender) {
+    localStorage.setItem("currentSurvey", nextGender);
+    alert(`Now starting the ${nextGender} survey.`);
+    location.reload();
 }
 
 function compareSelections() {
