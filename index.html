@@ -9,46 +9,65 @@
 <body>
     <h2>Comparative Selection Survey</h2>
     <form id="survey-form">
+        <!-- Gender Selection -->
         <div class="section">
-            <div class="section-title">Preferences</div>
-            <label><input type="checkbox" class="select-all" data-group="preferences"> Select All</label>
-            <label><input type="checkbox" name="preferences"> Option A</label>
-            <label><input type="checkbox" name="preferences"> Option B</label>
-            <label><input type="checkbox" name="preferences"> Option C</label>
-            <label><input type="checkbox" name="preferences"> Option D</label>
+            <div class="section-title">Are you male or female?</div>
+            <label><input type="radio" name="gender" value="male" onclick="showSections()"> Male</label>
+            <label><input type="radio" name="gender" value="female" onclick="showSections()"> Female</label>
         </div>
 
-        <div class="section">
-            <div class="section-title">Interests</div>
-            <label><input type="checkbox" class="select-all" data-group="interests"> Select All</label>
-            <label><input type="checkbox" name="interests"> Option E</label>
-            <label><input type="checkbox" name="interests"> Option F</label>
-            <label><input type="checkbox" name="interests"> Option G</label>
-            <label><input type="checkbox" name="interests"> Option H</label>
+        <!-- Male-Specific Sections -->
+        <div id="male-sections" class="hidden">
+            <div class="section">
+                <div class="section-title">Preferences (Male)</div>
+                <label><input type="checkbox" class="select-all" data-group="male_preferences"> Select All</label>
+                <label><input type="checkbox" name="male_preferences"> Option A</label>
+                <label><input type="checkbox" name="male_preferences"> Option B</label>
+                <label><input type="checkbox" name="male_preferences"> Option C</label>
+                <label><input type="checkbox" name="male_preferences"> Option D</label>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Interests (Male)</div>
+                <label><input type="checkbox" class="select-all" data-group="male_interests"> Select All</label>
+                <label><input type="checkbox" name="male_interests"> Option E</label>
+                <label><input type="checkbox" name="male_interests"> Option F</label>
+                <label><input type="checkbox" name="male_interests"> Option G</label>
+                <label><input type="checkbox" name="male_interests"> Option H</label>
+            </div>
         </div>
 
-        <div class="section">
-            <div class="section-title">Habits</div>
-            <label><input type="checkbox" class="select-all" data-group="habits"> Select All</label>
-            <label><input type="checkbox" name="habits"> Option I</label>
-            <label><input type="checkbox" name="habits"> Option J</label>
-            <label><input type="checkbox" name="habits"> Option K</label>
-            <label><input type="checkbox" name="habits"> Option L</label>
-        </div>
+        <!-- Female-Specific Sections -->
+        <div id="female-sections" class="hidden">
+            <div class="section">
+                <div class="section-title">Preferences (Female)</div>
+                <label><input type="checkbox" class="select-all" data-group="female_preferences"> Select All</label>
+                <label><input type="checkbox" name="female_preferences"> Option I</label>
+                <label><input type="checkbox" name="female_preferences"> Option J</label>
+                <label><input type="checkbox" name="female_preferences"> Option K</label>
+                <label><input type="checkbox" name="female_preferences"> Option L</label>
+            </div>
 
-        <div class="section">
-            <div class="section-title">Experiences</div>
-            <label><input type="checkbox" class="select-all" data-group="experiences"> Select All</label>
-            <label><input type="checkbox" name="experiences"> Option M</label>
-            <label><input type="checkbox" name="experiences"> Option N</label>
-            <label><input type="checkbox" name="experiences"> Option O</label>
-            <label><input type="checkbox" name="experiences"> Option P</label>
+            <div class="section">
+                <div class="section-title">Interests (Female)</div>
+                <label><input type="checkbox" class="select-all" data-group="female_interests"> Select All</label>
+                <label><input type="checkbox" name="female_interests"> Option M</label>
+                <label><input type="checkbox" name="female_interests"> Option N</label>
+                <label><input type="checkbox" name="female_interests"> Option O</label>
+                <label><input type="checkbox" name="female_interests"> Option P</label>
+            </div>
         </div>
 
         <button type="submit">Submit</button>
     </form>
 
     <script>
+        function showSections() {
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            document.getElementById("male-sections").style.display = gender === "male" ? "block" : "none";
+            document.getElementById("female-sections").style.display = gender === "female" ? "block" : "none";
+        }
+
         document.querySelectorAll(".select-all").forEach(selectAll => {
             selectAll.addEventListener("change", function() {
                 const group = this.getAttribute("data-group");
