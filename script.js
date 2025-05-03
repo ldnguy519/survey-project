@@ -68,5 +68,9 @@ window.addEventListener("load", function() {
         document.getElementById("section-1-title").textContent = "Section 1F";
         document.getElementById("section-2-title").textContent = "Section 2F";
         document.getElementById("section-3-title").textContent = "Section 3F";
+    } else {
+        document.getElementById("section-1-title").textContent = "Section 1M";
+        document.getElementById("section-2-title").textContent = "Section 2M";
+        document.getElementById("section-3-title").textContent = "Section 3M";
     }
 });
