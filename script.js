@@ -25,15 +25,29 @@ window.onload = function() {
 
 // Function to compare selections and display summary
 function compareSelections(previousSelections) {
-    let matchSummary = "<h3>Matched Selections</h3><ul>";
+    let matchSummary = "<h3>Matched Selections</h3>";
 
+    const sections = {};
+
+    // Group matched selections by section
     document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
         if (previousSelections[checkbox.name]) {
-            matchSummary += `<li>${checkbox.parentElement.textContent.trim()}</li>`;
+            const sectionTitle = checkbox.closest(".section").querySelector(".section-title").textContent;
+            if (!sections[sectionTitle]) {
+                sections[sectionTitle] = [];
+            }
+            sections[sectionTitle].push(checkbox.parentElement.textContent.trim());
         }
     });
 
-    matchSummary += "</ul>";
+    // Generate summary HTML
+    for (const section in sections) {
+        matchSummary += `<h4>${section}</h4><ul>`;
+        sections[section].forEach(item => {
+            matchSummary += `<li>${item}</li>`;
+        });
+        matchSummary += "</ul>";
+    }
 
     // Display summary instead of modifying individual checkboxes
     document.getElementById("survey-form").innerHTML = matchSummary;
