@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparative Selection Survey</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+</head>
+<body>
+    <h2>Comparative Selection Survey</h2>
+    <form id="survey-form">
+        <div class="section">
+            <div class="section-title">Preferences</div>
+            <label><input type="checkbox" class="select-all" data-group="preferences"> Select All</label>
+            <label><input type="checkbox" name="preferences"> Option A</label>
+            <label><input type="checkbox" name="preferences"> Option B</label>
+            <label><input type="checkbox" name="preferences"> Option C</label>
+            <label><input type="checkbox" name="preferences"> Option D</label>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Interests</div>
+            <label><input type="checkbox" class="select-all" data-group="interests"> Select All</label>
+            <label><input type="checkbox" name="interests"> Option E</label>
+            <label><input type="checkbox" name="interests"> Option F</label>
+            <label><input type="checkbox" name="interests"> Option G</label>
+            <label><input type="checkbox" name="interests"> Option H</label>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Habits</div>
+            <label><input type="checkbox" class="select-all" data-group="habits"> Select All</label>
+            <label><input type="checkbox" name="habits"> Option I</label>
+            <label><input type="checkbox" name="habits"> Option J</label>
+            <label><input type="checkbox" name="habits"> Option K</label>
+            <label><input type="checkbox" name="habits"> Option L</label>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Experiences</div>
+            <label><input type="checkbox" class="select-all" data-group="experiences"> Select All</label>
+            <label><input type="checkbox" name="experiences"> Option M</label>
+            <label><input type="checkbox" name="experiences"> Option N</label>
+            <label><input type="checkbox" name="experiences"> Option O</label>
+            <label><input type="checkbox" name="experiences"> Option P</label>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.querySelectorAll(".select-all").forEach(selectAll => {
+            selectAll.addEventListener("change", function() {
+                const group = this.getAttribute("data-group");
+                const checkboxes = document.querySelectorAll(`input[name="${group}"]`);
+                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+            });
+        });
+    </script>
+</body>
+</html>
