@@ -8,31 +8,37 @@ document.getElementById("survey-form").addEventListener("submit", function(event
         selectedValues[checkbox.name] = true;
     });
 
-    // Store submission based on gender
-    localStorage.setItem(gender, JSON.stringify(selectedValues));
+    // Store the first completed survey in localStorage
+    if (!localStorage.getItem("male") && gender === "male") {
+        localStorage.setItem("male", JSON.stringify(selectedValues));
+        generateShareableLink("female"); // Prompt female participant
+    } else if (!localStorage.getItem("female") && gender === "female") {
+        localStorage.setItem("female", JSON.stringify(selectedValues));
+        generateShareableLink("male"); // Prompt male participant
+    }
 
-    // Check if both gender surveys are completed
+    // If both surveys are completed, compare results
     if (localStorage.getItem("male") && localStorage.getItem("female")) {
         compareSelections();
-    } else {
-        // Generate shareable link
-        const encodedData = encodeURIComponent(JSON.stringify(selectedValues));
-        const baseUrl = window.location.href.split('?')[0];
-        const shareableLink = `${baseUrl}?data=${encodedData}`;
-
-        // Display confirmation message with copy and forward options
-        document.body.innerHTML = `
-            <div style="text-align: center; font-family: Arial, sans-serif;">
-                <h2>Survey submitted!</h2>
-                <p>Share this link for the second survey:</p>
-                <input type="text" id="shareable-link" value="${shareableLink}" readonly style="width: 80%; padding: 10px; font-size: 16px;">
-                <button onclick="copyLink()" style="padding: 10px; margin-top: 10px;">Copy Link</button>
-                <button onclick="sendSMS('${shareableLink}')" style="padding: 10px; margin-top: 10px;">Forward via SMS</button>
-                <button onclick="reloadSurvey()" style="padding: 10px; margin-top: 10px;">Start New Survey</button>
-            </div>
-        `;
     }
 });
+
+// Function to generate a shareable link for the opposite gender
+function generateShareableLink(oppositeGender) {
+    const baseUrl = window.location.href.split('?')[0];
+    const shareableLink = `${baseUrl}?gender=${oppositeGender}`;
+
+    document.body.innerHTML = `
+        <div style="text-align: center; font-family: Arial, sans-serif;">
+            <h2>Survey submitted!</h2>
+            <p>Now, share this link with a ${oppositeGender} participant:</p>
+            <input type="text" id="shareable-link" value="${shareableLink}" readonly style="width: 80%; padding: 10px; font-size: 16px;">
+            <button onclick="copyLink()" style="padding: 10px; margin-top: 10px;">Copy Link</button>
+            <button onclick="sendSMS('${shareableLink}')" style="padding: 10px; margin-top: 10px;">Forward via SMS</button>
+            <button onclick="reloadSurvey()" style="padding: 10px; margin-top: 10px;">Start New Survey</button>
+        </div>
+    `;
+}
 
 // Function to copy link to clipboard
 function copyLink() {
@@ -55,7 +61,7 @@ function reloadSurvey() {
     window.location.href = window.location.href.split('?')[0];
 }
 
-// Function to compare submissions after both gender surveys are completed
+// Function to compare Male vs. Female responses once both surveys are completed
 function compareSelections() {
     let maleSelections = JSON.parse(localStorage.getItem("male"));
     let femaleSelections = JSON.parse(localStorage.getItem("female"));
