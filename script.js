@@ -32,17 +32,19 @@ function compareSelections() {
 
     document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
         const sectionTitle = checkbox.closest(".section").querySelector(".section-title").textContent;
-        if (!sections[sectionTitle]) {
-            sections[sectionTitle] = [];
+        const sectionNumber = checkbox.closest(".section").querySelector(".section-title").id.replace("section-", "").replace("-title", ""); // Extract section number
+
+        if (!sections[sectionNumber]) {
+            sections[sectionNumber] = [];
         }
 
         if (maleSelections[checkbox.id] && femaleSelections[checkbox.id]) {
-            sections[sectionTitle].push(checkbox.parentElement.textContent.trim());
+            sections[sectionNumber].push(checkbox.parentElement.textContent.trim());
         }
     });
 
     for (const section in sections) {
-        matchSummary += `<h4>${section}</h4><ul>`;
+        matchSummary += `<h4>Section ${section}</h4><ul>`;
         sections[section].forEach(item => {
             matchSummary += `<li>${item}</li>`;
         });
@@ -60,4 +62,11 @@ function resetSurvey() {
 window.addEventListener("load", function() {
     const currentParticipant = localStorage.getItem("currentParticipant") || "male";
     document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)} Participant`;
+
+    // Adjust section titles dynamically
+    if (currentParticipant === "female") {
+        document.getElementById("section-1-title").textContent = "Section 1F";
+        document.getElementById("section-2-title").textContent = "Section 2F";
+        document.getElementById("section-3-title").textContent = "Section 3F";
+    }
 });
