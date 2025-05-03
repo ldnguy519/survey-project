@@ -1,39 +1,45 @@
 document.getElementById("survey-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevent default submission
 
-    // Capture selected values
+    const gender = document.querySelector('input[name="gender"]:checked');
+    if (!gender) {
+        alert("Please select a gender before proceeding.");
+        return;
+    }
+
     const selectedValues = {};
-    const gender = document.querySelector('input[name="gender"]:checked').value;
     document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
-        selectedValues[checkbox.name] = true;
+        selectedValues[checkbox.id] = true; // Use checkbox ID for uniqueness
     });
 
-    // Store survey data based on gender
-    localStorage.setItem(gender, JSON.stringify(selectedValues));
+    localStorage.setItem(gender.value, JSON.stringify(selectedValues));
 
-    // Check if the second survey needs to start
     if (!localStorage.getItem("male") || !localStorage.getItem("female")) {
-        let oppositeGender = gender === "male" ? "female" : "male";
-        startSecondSurvey(oppositeGender);
+        startSecondSurvey(gender.value === "male" ? "female" : "male");
     } else {
-        // Both surveys are completed, proceed to comparison
         compareSelections();
     }
 });
 
-// Function to start the second survey immediately
+// Retain gender selection after refresh
+window.addEventListener("load", function() {
+    const savedGender = localStorage.getItem("currentSurvey");
+    if (savedGender) {
+        document.querySelector(`input[name="gender"][value="${savedGender}"]`).checked = true;
+        showSections();
+    }
+});
+
 function startSecondSurvey(gender) {
     localStorage.setItem("currentSurvey", gender);
-    window.location.href = window.location.href.split('?')[0]; // Reload for second survey
+    location.reload(); // Reload without losing progress
 }
 
-// Function to compare Male vs Female responses after both surveys are complete
 function compareSelections() {
-    let maleSelections = JSON.parse(localStorage.getItem("male"));
-    let femaleSelections = JSON.parse(localStorage.getItem("female"));
+    let maleSelections = JSON.parse(localStorage.getItem("male")) || {};
+    let femaleSelections = JSON.parse(localStorage.getItem("female")) || {};
 
     let matchSummary = "<h3>Comparison of Male vs Female Responses</h3>";
-
     const sections = {};
 
     document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
@@ -42,43 +48,29 @@ function compareSelections() {
             sections[sectionTitle] = { male: [], female: [] };
         }
 
-        if (maleSelections[checkbox.name]) {
+        if (maleSelections[checkbox.id]) {
             sections[sectionTitle].male.push(checkbox.parentElement.textContent.trim());
         }
 
-        if (femaleSelections[checkbox.name]) {
+        if (femaleSelections[checkbox.id]) {
             sections[sectionTitle].female.push(checkbox.parentElement.textContent.trim());
         }
     });
 
-    // Generate structured summary
     for (const section in sections) {
         matchSummary += `<h4>${section}</h4>`;
-        matchSummary += "<strong>Male Selected:</strong><ul>";
-        sections[section].male.forEach(item => {
-            matchSummary += `<li>${item}</li>`;
-        });
-        matchSummary += "</ul><strong>Female Selected:</strong><ul>";
-        sections[section].female.forEach(item => {
-            matchSummary += `<li>${item}</li>`;
-        });
-        matchSummary += "</ul>";
+        matchSummary += "<strong>Male Selected:</strong><ul>" + sections[section].male.map(item => `<li>${item}</li>`).join("") + "</ul>";
+        matchSummary += "<strong>Female Selected:</strong><ul>" + sections[section].female.map(item => `<li>${item}</li>`).join("") + "</ul>";
     }
 
-    // Display comparison results with a "Go Back to Start" button
-    document.body.innerHTML = `
-        ${matchSummary}
-        <button onclick="resetSurvey()" style="padding: 10px; margin-top: 20px;">Go Back to Start</button>
-    `;
+    document.body.innerHTML = `${matchSummary}<button onclick="resetSurvey()" style="padding: 10px; margin-top: 20px;">Go Back to Start</button>`;
 }
 
-// Function to reset survey and clear all stored data
 function resetSurvey() {
     localStorage.clear();
-    window.location.href = window.location.href.split('?')[0]; // Reload for a fresh start
+    location.reload();
 }
 
-// Clear storage when the browser is closed
 window.addEventListener("beforeunload", function() {
     localStorage.clear();
 });
