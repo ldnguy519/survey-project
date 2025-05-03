@@ -8,18 +8,16 @@ document.getElementById("survey-form").addEventListener("submit", function(event
         selectedValues[checkbox.name] = true;
     });
 
-    // Store the first completed survey in localStorage
-    if (!localStorage.getItem("male") && gender === "male") {
-        localStorage.setItem("male", JSON.stringify(selectedValues));
-        promptSecondSurvey("female");
-    } else if (!localStorage.getItem("female") && gender === "female") {
-        localStorage.setItem("female", JSON.stringify(selectedValues));
-        promptSecondSurvey("male");
-    }
+    // Store survey data based on gender
+    localStorage.setItem(gender, JSON.stringify(selectedValues));
 
-    // If both surveys are completed, compare results
+    // Check if both genders have completed surveys
     if (localStorage.getItem("male") && localStorage.getItem("female")) {
         compareSelections();
+    } else {
+        // Prompt for second survey (only if one survey has been completed)
+        let oppositeGender = gender === "male" ? "female" : "male";
+        promptSecondSurvey(oppositeGender);
     }
 });
 
@@ -34,13 +32,13 @@ function promptSecondSurvey(oppositeGender) {
     `;
 }
 
-// Function to start second survey immediately
+// Function to start the second survey
 function startSecondSurvey(gender) {
     localStorage.setItem("currentSurvey", gender);
     window.location.href = window.location.href.split('?')[0]; // Reload for new survey
 }
 
-// Function to compare Male vs. Female responses once both surveys are completed
+// Function to compare Male vs Female responses after both surveys are complete
 function compareSelections() {
     let maleSelections = JSON.parse(localStorage.getItem("male"));
     let femaleSelections = JSON.parse(localStorage.getItem("female"));
