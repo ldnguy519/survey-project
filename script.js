@@ -11,31 +11,20 @@ document.getElementById("survey-form").addEventListener("submit", function(event
     // Store survey data based on gender
     localStorage.setItem(gender, JSON.stringify(selectedValues));
 
-    // Check if both genders have completed surveys
-    if (localStorage.getItem("male") && localStorage.getItem("female")) {
-        compareSelections();
-    } else {
-        // Prompt for second survey (only if one survey has been completed)
+    // Check if the second survey needs to start
+    if (!localStorage.getItem("male") || !localStorage.getItem("female")) {
         let oppositeGender = gender === "male" ? "female" : "male";
-        promptSecondSurvey(oppositeGender);
+        startSecondSurvey(oppositeGender);
+    } else {
+        // Both surveys are completed, proceed to comparison
+        compareSelections();
     }
 });
 
-// Function to prompt the second survey immediately after the first
-function promptSecondSurvey(oppositeGender) {
-    document.body.innerHTML = `
-        <div style="text-align: center; font-family: Arial, sans-serif;">
-            <h2>First survey completed!</h2>
-            <p>Now, the ${oppositeGender} participant must complete the survey.</p>
-            <button onclick="startSecondSurvey('${oppositeGender}')" style="padding: 10px; margin-top: 10px;">Start ${oppositeGender} Survey</button>
-        </div>
-    `;
-}
-
-// Function to start the second survey
+// Function to start the second survey immediately
 function startSecondSurvey(gender) {
     localStorage.setItem("currentSurvey", gender);
-    window.location.href = window.location.href.split('?')[0]; // Reload for new survey
+    window.location.href = window.location.href.split('?')[0]; // Reload for second survey
 }
 
 // Function to compare Male vs Female responses after both surveys are complete
