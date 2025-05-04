@@ -21,6 +21,28 @@ function toggleSubOptions(subOptionId) {
 document.getElementById("survey-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
+    // Validate that at least one checkbox per section is selected
+    let sections = document.querySelectorAll(".section");
+    let allValid = true;
+
+    sections.forEach(section => {
+        let checkboxes = section.querySelectorAll("input[type='checkbox']");
+        let isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        if (!isChecked) {
+            allValid = false;
+            section.style.border = "2px solid red"; // Highlight incomplete section
+        } else {
+            section.style.border = "1px solid #ccc"; // Reset border if section is valid
+        }
+    });
+
+    if (!allValid) {
+        alert("Please select at least one option from each section.");
+        return;
+    }
+
+    // Save selections in localStorage
     let participant = localStorage.getItem("currentParticipant") || "male";
     let selectedValues = {};
 
