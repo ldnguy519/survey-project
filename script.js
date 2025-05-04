@@ -42,7 +42,7 @@ document.getElementById("survey-form").addEventListener("submit", function(event
         return;
     }
 
-    let participant = localStorage.getItem("currentParticipant") || "male";
+    let participant = localStorage.getItem("currentParticipant") || "Person 1";
     let selectedValues = {};
 
     document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
@@ -57,7 +57,7 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 
     localStorage.setItem(participant, JSON.stringify(selectedValues));
 
-    if (participant === "male") {
+    if (participant === "Person 1") {
         startSecondSurvey();
     } else {
         compareSelections();
@@ -65,20 +65,20 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 });
 
 function startSecondSurvey() {
-    alert("Male survey completed! Now starting the female survey.");
-    localStorage.setItem("currentParticipant", "female");
+    alert("Person 1 survey completed! Now starting the Person 2 survey.");
+    localStorage.setItem("currentParticipant", "Person 2");
     location.reload();
 }
 
 function compareSelections() {
-    let maleSelections = JSON.parse(localStorage.getItem("male")) || {};
-    let femaleSelections = JSON.parse(localStorage.getItem("female")) || {};
+    let firstSelections = JSON.parse(localStorage.getItem("Person 1")) || {};
+    let secondSelections = JSON.parse(localStorage.getItem("Person 2")) || {};
 
     let matchSummary = "<h3>Matching Responses</h3>";
 
-    for (let category in maleSelections) {
-        if (femaleSelections[category]) {
-            let matchedSubOptions = maleSelections[category].filter(option => femaleSelections[category].includes(option));
+    for (let category in firstSelections) {
+        if (secondSelections[category]) {
+            let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
 
             if (matchedSubOptions.length > 0) {
                 matchSummary += `<h4>${category}</h4><ul>`;
@@ -100,7 +100,7 @@ function resetSurvey() {
 
 window.addEventListener("load", function() {
     if (!localStorage.getItem("currentParticipant")) {
-        localStorage.setItem("currentParticipant", "male"); // Ensure default is male
+        localStorage.setItem("currentParticipant", "Person 1"); // Ensure default is Person 1
     }
     
     const currentParticipant = localStorage.getItem("currentParticipant");
