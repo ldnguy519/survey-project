@@ -5,18 +5,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function toggleSubOptions(mainOptionId) {
-    let subOptionsDiv = document.getElementById(`sub_${mainOptionId}`);
-    let mainCheckbox = document.getElementById(mainOptionId);
+function toggleSubOptions(subOptionId) {
+    let subOptionsDiv = document.getElementById(subOptionId);
+    let button = document.querySelector(`button[onclick="toggleSubOptions('${subOptionId}')"]`);
 
-    if (mainCheckbox.checked) {
+    if (subOptionsDiv.style.display === "none") {
         subOptionsDiv.style.display = "block";
+        button.textContent = "▼ " + button.textContent.slice(2);
     } else {
         subOptionsDiv.style.display = "none";
-        // Uncheck all sub-options when hiding
-        subOptionsDiv.querySelectorAll("input[type='checkbox']").forEach(subCheckbox => {
-            subCheckbox.checked = false;
-        });
+        button.textContent = "▶ " + button.textContent.slice(2);
     }
 }
 
@@ -80,11 +78,10 @@ function resetSurvey() {
 }
 
 window.addEventListener("load", function() {
-    const currentParticipant = localStorage.getItem("currentParticipant") || "male";
-    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)} Participant`;
-});
-
-window.addEventListener("load", function() {
-    const currentParticipant = localStorage.getItem("currentParticipant") || "male";
+    if (!localStorage.getItem("currentParticipant")) {
+        localStorage.setItem("currentParticipant", "male"); // Ensure default is male
+    }
+    
+    const currentParticipant = localStorage.getItem("currentParticipant");
     document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)} Participant`;
 });
