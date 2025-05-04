@@ -21,24 +21,26 @@ function toggleSubOptions(subOptionId) {
 document.getElementById("survey-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    // Validate that at least one checkbox per section is selected
-    let sections = document.querySelectorAll(".section");
+    // Define required options
+    let requiredOptions = ["sec1_A", "sec1_B", "sec2_J", "sec2_K", "sec3_N", "sec3_O"];
     let allValid = true;
 
-    sections.forEach(section => {
-        let checkboxes = section.querySelectorAll("input[type='checkbox']");
+    requiredOptions.forEach(optionId => {
+        let checkboxes = document.querySelectorAll(`input[data-parent='${optionId}']`);
         let isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        let optionElement = document.getElementById(optionId).parentElement;
 
         if (!isChecked) {
             allValid = false;
-            section.style.border = "2px solid red"; // Highlight incomplete section
+            optionElement.style.color = "red"; // Highlight invalid option
         } else {
-            section.style.border = "1px solid #ccc"; // Reset border if section is valid
+            optionElement.style.color = "black"; // Reset highlight
         }
     });
 
     if (!allValid) {
-        alert("Please select at least one option from each section.");
+        alert("Please select at least one option under each letter (A, B, J, K, N, O).");
         return;
     }
 
