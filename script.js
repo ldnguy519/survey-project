@@ -9,12 +9,12 @@ function toggleSubOptions(subOptionId) {
     let subOptionsDiv = document.getElementById(subOptionId);
     let button = document.querySelector(`button[onclick="toggleSubOptions('${subOptionId}')"]`);
 
-    if (subOptionsDiv.style.display === "none") {
+    if (subOptionsDiv.style.display === "none" || subOptionsDiv.style.display === "") {
         subOptionsDiv.style.display = "block";
-        button.textContent = "▼ " + button.textContent.slice(2);
+        button.textContent = "▼ " + button.textContent.replace(/▶ /, "");
     } else {
         subOptionsDiv.style.display = "none";
-        button.textContent = "▶ " + button.textContent.slice(2);
+        button.textContent = "▶ " + button.textContent.replace(/▼ /, "");
     }
 }
 
