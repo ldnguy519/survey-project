@@ -19,9 +19,8 @@ function toggleSubOptions(subOptionId) {
 }
 
 document.getElementById("survey-form").addEventListener("submit", function(event) {
-    event.preventDefault();
+    event.preventDefault(); // Prevent default submission
 
-    // Define required options
     let requiredOptions = ["sec1_A", "sec1_B", "sec2_J", "sec2_K", "sec3_N", "sec3_O"];
     let allValid = true;
 
@@ -33,14 +32,42 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 
         if (!isChecked) {
             allValid = false;
-            optionElement.style.color = "red"; // Highlight invalid option
+            optionElement.style.color = "red"; // Highlight missing selection
         } else {
             optionElement.style.color = "black"; // Reset highlight
         }
     });
 
     if (!allValid) {
-        alert("Please select at least one option under each letter (A, B, J, K, N, O).");
+        alert("Please select at least one option under each option.");
+        return; // **Explicitly stop further execution**
+    }
+
+    // Continue with form submission logic only if validation passes
+    let participant = localStorage.getItem("currentParticipant") || "male";
+    let selectedValues = {};
+
+    document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
+        let parent = checkbox.dataset.parent || checkbox.id;
+
+        if (!selectedValues[parent]) {
+            selectedValues[parent] = [];
+        }
+        
+        selectedValues[parent].push(checkbox.id);
+    });
+
+    localStorage.setItem(participant, JSON.stringify(selectedValues));
+
+    if (participant === "male") {
+        startSecondSurvey();
+    } else {
+        compareSelections();
+    }
+});
+
+    if (!allValid) {
+        alert("Please select at least one option under each option");
         return;
     }
 
