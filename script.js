@@ -21,7 +21,6 @@ function toggleSubOptions(subOptionId) {
 document.getElementById("survey-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    // Validate that at least one checkbox is checked within each sub-option
     let allSubOptions = document.querySelectorAll(".sub-options");
     let isValid = true;
     let errorMessage = "Please select at least one option in each section before submitting.";
@@ -32,6 +31,9 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 
         if (!isChecked) {
             isValid = false;
+            subOptionsDiv.style.border = "2px solid red"; // Highlight missing selection
+        } else {
+            subOptionsDiv.style.border = "none"; // Remove highlight if fixed
         }
     });
 
