@@ -1,3 +1,25 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // Hide all sub-options initially
+    document.querySelectorAll(".sub-options").forEach(div => {
+        div.style.display = "none";
+    });
+});
+
+function toggleSubOptions(mainOptionId) {
+    let subOptionsDiv = document.getElementById(`sub_${mainOptionId}`);
+    let mainCheckbox = document.getElementById(mainOptionId);
+
+    if (mainCheckbox.checked) {
+        subOptionsDiv.style.display = "block";
+    } else {
+        subOptionsDiv.style.display = "none";
+        // Uncheck all sub-options when hiding
+        subOptionsDiv.querySelectorAll("input[type='checkbox']").forEach(subCheckbox => {
+            subCheckbox.checked = false;
+        });
+    }
+}
+
 document.getElementById("survey-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -56,6 +78,11 @@ function resetSurvey() {
     localStorage.clear();
     location.reload();
 }
+
+window.addEventListener("load", function() {
+    const currentParticipant = localStorage.getItem("currentParticipant") || "male";
+    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)} Participant`;
+});
 
 window.addEventListener("load", function() {
     const currentParticipant = localStorage.getItem("currentParticipant") || "male";
