@@ -90,7 +90,22 @@ function compareSelections() {
         }
     }
 
-    document.body.innerHTML = `${matchSummary}<button onclick="resetSurvey()" style="padding: 10px; margin-top: 20px;">Restart Survey</button>`;
+    document.body.innerHTML = `
+        ${matchSummary}
+        <button onclick="copySummary()" style="padding: 10px; margin-top: 20px;">Copy Summary</button>
+        <button onclick="resetSurvey()" style="padding: 10px; margin-top: 20px;">Restart Survey</button>
+    `;
+}
+
+function copySummary() {
+    let summaryText = document.querySelector("h3").innerText + "\n" + 
+        Array.from(document.querySelectorAll("h4, li")).map(el => el.innerText).join("\n");
+
+    navigator.clipboard.writeText(summaryText).then(() => {
+        alert("Matching responses copied to clipboard!");
+    }).catch(err => {
+        console.error("Failed to copy text: ", err);
+    });
 }
 
 function resetSurvey() {
