@@ -5,7 +5,13 @@ document.getElementById("survey-form").addEventListener("submit", function(event
     let selectedValues = {};
 
     document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
-        selectedValues[checkbox.id] = true;
+        let parent = checkbox.dataset.parent || checkbox.id;
+
+        if (!selectedValues[parent]) {
+            selectedValues[parent] = [];
+        }
+        
+        selectedValues[parent].push(checkbox.id);
     });
 
     localStorage.setItem(participant, JSON.stringify(selectedValues));
@@ -28,27 +34,19 @@ function compareSelections() {
     let femaleSelections = JSON.parse(localStorage.getItem("female")) || {};
 
     let matchSummary = "<h3>Matching Responses</h3>";
-    const sections = {};
 
-    document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
-        const sectionTitle = checkbox.closest(".section").querySelector(".section-title").textContent;
-        const sectionNumber = checkbox.closest(".section").querySelector(".section-title").id.replace("section-", "").replace("-title", "");
+    for (let category in maleSelections) {
+        if (femaleSelections[category]) {
+            let matchedSubOptions = maleSelections[category].filter(option => femaleSelections[category].includes(option));
 
-        if (!sections[sectionNumber]) {
-            sections[sectionNumber] = [];
+            if (matchedSubOptions.length > 0) {
+                matchSummary += `<h4>${category}</h4><ul>`;
+                matchedSubOptions.forEach(item => {
+                    matchSummary += `<li>${item}</li>`;
+                });
+                matchSummary += "</ul>";
+            }
         }
-
-        if (maleSelections[checkbox.id] && femaleSelections[checkbox.id]) {
-            sections[sectionNumber].push(checkbox.parentElement.textContent.trim());
-        }
-    });
-
-    for (const section in sections) {
-        matchSummary += `<h4>Section ${section}</h4><ul>`;
-        sections[section].forEach(item => {
-            matchSummary += `<li>${item}</li>`;
-        });
-        matchSummary += "</ul>";
     }
 
     document.body.innerHTML = `${matchSummary}<button onclick="resetSurvey()" style="padding: 10px; margin-top: 20px;">Restart Survey</button>`;
