@@ -1,3 +1,4 @@
+/* General Page Styling */
 body {
     font-family: Arial, sans-serif;
     margin: 10px;
@@ -7,6 +8,7 @@ body {
     background-color: #f5f5f5;
 }
 
+/* Section Styling */
 .section {
     margin-bottom: 20px;
     padding: 15px;
@@ -15,27 +17,54 @@ body {
     background: #ffffff;
 }
 
+/* Section Titles */
 .section-title {
     font-weight: bold;
     margin-bottom: 10px;
     font-size: 18px;
 }
 
-label {
-    display: block;
+/* Expand/Collapse Button */
+.expand-btn {
+    background: none;
+    border: none;
     font-size: 16px;
-    padding: 8px;
-    background: #fafafa;
-    border-radius: 4px;
-    margin: 5px 0;
+    cursor: pointer;
+    display: block;
+    margin: 8px 0;
+    font-weight: bold;
+    text-align: left;
+    color: #007bff;
+    transition: color 0.3s;
 }
 
-input[type="checkbox"], input[type="radio"] {
+.expand-btn:hover {
+    color: #0056b3;
+}
+
+/* Sub-options Styling */
+.sub-options {
+    margin-left: 20px; /* Indentation for sub-options */
+    display: none;
+    padding-left: 10px;
+    border-left: 2px solid #ccc;
+}
+
+.sub-label {
+    display: block;
+    margin-left: 10px;
+    font-size: 16px;
+    padding: 5px;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
     margin-right: 10px;
     transform: scale(1.2);
 }
 
-button {
+/* Submit Button */
+button[type="submit"] {
     width: 100%;
     padding: 12px;
     font-size: 18px;
@@ -47,10 +76,6 @@ button {
     transition: background 0.3s;
 }
 
-button:hover {
+button[type="submit"]:hover {
     background: #0056b3;
-}
-
-.hidden {
-    display: none;
 }
