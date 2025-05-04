@@ -104,5 +104,5 @@ window.addEventListener("load", function() {
     }
     
     const currentParticipant = localStorage.getItem("currentParticipant");
-    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)} Participant`;
+    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)} `;
 });
