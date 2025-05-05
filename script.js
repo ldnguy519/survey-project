@@ -70,13 +70,26 @@ function startSecondSurvey() {
     location.reload();
 }
 
-function getLabelText(checkboxId) {
-    let checkbox = document.getElementById(checkboxId);
-    if (checkbox) {
-        let label = checkbox.closest("label"); // Ensure we find the label
-        return label ? label.textContent.trim() : checkboxId; // Get the label text if available
+// Function to retrieve the correct label text for checkboxes or sections
+function getLabelText(elementId) {
+    let element = document.getElementById(elementId);
+
+    if (!element) return elementId; // Fallback to ID if element isn't found
+
+    // If it's a checkbox, get its label
+    if (element.type === "checkbox") {
+        let label = element.closest("label");
+        return label ? label.textContent.trim() : elementId;
     }
-    return checkboxId; // Fallback to the ID if label isn't found
+
+    // If it's a section, get the nearest section title
+    let section = element.closest(".section");
+    if (section) {
+        let sectionTitle = section.querySelector(".section-title");
+        return sectionTitle ? sectionTitle.textContent.trim() : elementId;
+    }
+
+    return elementId; // Default fallback
 }
 
 function compareSelections() {
