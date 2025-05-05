@@ -17,20 +17,19 @@ document.getElementById("survey-form").addEventListener("submit", function(event
     event.preventDefault();
 
     let isValid = true;
-    let errorMessage = "Please select at least one option in each section before submitting.";
+    let errorMessage = "Please select at least one option in each subsection before submitting.";
 
     // Reset previous highlights
-    document.querySelectorAll(".section").forEach(section => section.classList.remove("warning"));
+    document.querySelectorAll(".sub-options").forEach(subOptionsDiv => subOptionsDiv.classList.remove("warning"));
 
     document.querySelectorAll(".sub-options").forEach(subOptionsDiv => {
         let checkboxes = subOptionsDiv.querySelectorAll("input[type='checkbox']");
         let isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
 
-        // Find the parent section and apply a warning if no option is selected
-        let parentSection = subOptionsDiv.closest(".section");
+        // Apply warning to the specific subsection instead of the whole section
         if (!isChecked) {
             isValid = false;
-            parentSection.classList.add("warning"); // Highlight missing selection
+            subOptionsDiv.classList.add("warning"); // Highlight subsection with missing selection
         }
     });
 
