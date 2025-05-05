@@ -31,9 +31,9 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 
         if (!isChecked) {
             isValid = false;
-            subOptionsDiv.style.border = "2px solid red"; // Highlight missing selection
+            subOptionsDiv.classList.add("warning"); // Highlight missing selection
         } else {
-            subOptionsDiv.style.border = "none"; // Remove highlight if fixed
+            subOptionsDiv.classList.remove("warning"); // Remove highlight if fixed
         }
     });
 
@@ -70,6 +70,14 @@ function startSecondSurvey() {
     location.reload();
 }
 
+function getLabelText(checkboxId) {
+    let checkbox = document.getElementById(checkboxId);
+    if (checkbox) {
+        return checkbox.parentElement.textContent.trim(); // Get the label text
+    }
+    return checkboxId; // Fallback to the ID if label isn't found
+}
+
 function compareSelections() {
     let firstSelections = JSON.parse(localStorage.getItem("Person 1")) || {};
     let secondSelections = JSON.parse(localStorage.getItem("Person 2")) || {};
@@ -81,9 +89,9 @@ function compareSelections() {
             let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
 
             if (matchedSubOptions.length > 0) {
-                matchSummary += `<h4>${category}</h4><ul>`;
+                matchSummary += `<h4>${getLabelText(category)}</h4><ul>`;
                 matchedSubOptions.forEach(item => {
-                    matchSummary += `<li>${item}</li>`;
+                    matchSummary += `<li>${getLabelText(item)}</li>`;
                 });
                 matchSummary += "</ul>";
             }
@@ -119,5 +127,5 @@ window.addEventListener("load", function() {
     }
     
     const currentParticipant = localStorage.getItem("currentParticipant");
-    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)} `;
+    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)}`;
 });
