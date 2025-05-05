@@ -74,7 +74,7 @@ function startSecondSurvey() {
 function getLabelText(elementId) {
     let element = document.getElementById(elementId);
 
-    if (!element) return elementId; // Fallback to ID if not found
+    if (!element) return elementId; // Fallback to ID if element isn't found
 
     // If it's a checkbox, get the associated label text
     if (element.type === "checkbox") {
@@ -86,6 +86,13 @@ function getLabelText(elementId) {
     let button = document.querySelector(`button[onclick="toggleSubOptions('${elementId}')"]`);
     if (button) {
         return button.textContent.replace(/▶ |▼ /, "").trim(); // Clean button text
+    }
+
+    // If it's a section, find the parent `.section-title` element
+    let section = element.closest(".section");
+    if (section) {
+        let sectionTitle = section.querySelector(".section-title");
+        return sectionTitle ? sectionTitle.textContent.trim() : elementId;
     }
 
     return elementId; // Default fallback
