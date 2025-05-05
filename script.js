@@ -1,40 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Hide all sub-options initially
-    document.querySelectorAll(".sub-options").forEach(div => {
-        div.style.display = "none";
-    });
+    document.querySelectorAll(".sub-options").forEach(div => div.style.display = "none");
 });
 
 function toggleSubOptions(subOptionId) {
     let subOptionsDiv = document.getElementById(subOptionId);
     let button = document.querySelector(`button[onclick="toggleSubOptions('${subOptionId}')"]`);
 
-    if (subOptionsDiv.style.display === "none" || subOptionsDiv.style.display === "") {
-        subOptionsDiv.style.display = "block";
-        button.textContent = "▼ " + button.textContent.replace(/▶ /, "");
-    } else {
-        subOptionsDiv.style.display = "none";
-        button.textContent = "▶ " + button.textContent.replace(/▼ /, "");
-    }
+    let isExpanded = subOptionsDiv.style.display === "block";
+    subOptionsDiv.style.display = isExpanded ? "none" : "block";
+    button.setAttribute("aria-expanded", !isExpanded);
+    button.textContent = `${isExpanded ? "▶" : "▼"} ${button.textContent.replace(/▶ |▼ /, "")}`;
 }
 
-document.getElementById("survey-form").addEventListener("submit", function(event) {
+document.getElementById("survey-form").addEventListener("submit", function (event) {
     event.preventDefault();
 
-    let allSubOptions = document.querySelectorAll(".sub-options");
     let isValid = true;
     let errorMessage = "Please select at least one option in each section before submitting.";
 
-    allSubOptions.forEach(subOptionsDiv => {
-        let checkboxes = subOptionsDiv.querySelectorAll("input[type='checkbox']");
-        let isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-
-        if (!isChecked) {
-            isValid = false;
-            subOptionsDiv.classList.add("warning"); // Highlight missing selection
-        } else {
-            subOptionsDiv.classList.remove("warning"); // Remove highlight if fixed
-        }
+    document.querySelectorAll(".sub-options").forEach(subOptionsDiv => {
+        let isChecked = subOptionsDiv.querySelector("input[type='checkbox']:checked") !== null;
+        subOptionsDiv.classList.toggle("warning", !isChecked);
+        if (!isChecked) isValid = false;
     });
 
     if (!isValid) {
@@ -42,27 +30,23 @@ document.getElementById("survey-form").addEventListener("submit", function(event
         return;
     }
 
+    saveSurveyData();
+});
+
+function saveSurveyData() {
     let participant = localStorage.getItem("currentParticipant") || "Person 1";
     let selectedValues = {};
 
     document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
         let parent = checkbox.dataset.parent || checkbox.id;
-
-        if (!selectedValues[parent]) {
-            selectedValues[parent] = [];
-        }
-        
+        selectedValues[parent] = selectedValues[parent] || [];
         selectedValues[parent].push(checkbox.id);
     });
 
     localStorage.setItem(participant, JSON.stringify(selectedValues));
 
-    if (participant === "Person 1") {
-        startSecondSurvey();
-    } else {
-        compareSelections();
-    }
-});
+    participant === "Person 1" ? startSecondSurvey() : compareSelections();
+}
 
 function startSecondSurvey() {
     alert("Person 1 survey completed! Now starting the Person 2 survey.");
@@ -70,7 +54,7 @@ function startSecondSurvey() {
     location.reload();
 }
 
-// **Section Label Mapping**
+// Section Label Mapping
 const sectionMap = {
     sec1_A: "Car",
     sec1_B: "Fruit",
@@ -83,24 +67,21 @@ const sectionMap = {
     sec3_I: "Pokemon"
 };
 
-// **Function to retrieve correct label text**
 function getLabelText(elementId) {
     let element = document.getElementById(elementId);
 
     if (!element) {
-        return sectionMap[elementId] || elementId; // Use mapped section name or fallback to ID
+        return sectionMap[elementId] || elementId;
     }
 
-    // If it's a checkbox, get its associated label text
     if (element.type === "checkbox") {
         let label = element.closest("label");
         return label ? label.textContent.trim() : elementId;
     }
 
-    return sectionMap[elementId] || elementId; // Default fallback for section names
+    return sectionMap[elementId] || elementId;
 }
 
-// **Compare Selections & Display Human-Readable Labels**
 function compareSelections() {
     let firstSelections = JSON.parse(localStorage.getItem("Person 1")) || {};
     let secondSelections = JSON.parse(localStorage.getItem("Person 2")) || {};
@@ -144,9 +125,9 @@ function resetSurvey() {
     location.reload();
 }
 
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     if (!localStorage.getItem("currentParticipant")) {
-        localStorage.setItem("currentParticipant", "Person 1"); // Ensure default is Person 1
+        localStorage.setItem("currentParticipant", "Person 1");
     }
     
     const currentParticipant = localStorage.getItem("currentParticipant");
