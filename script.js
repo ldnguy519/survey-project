@@ -13,16 +13,25 @@ function toggleSubOptions(subOptionId) {
     button.textContent = `${isExpanded ? "▶" : "▼"} ${button.textContent.replace(/▶ |▼ /, "")}`;
 }
 
-document.getElementById("survey-form").addEventListener("submit", function (event) {
+document.getElementById("survey-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
     let isValid = true;
     let errorMessage = "Please select at least one option in each section before submitting.";
 
+    // Reset previous highlights
+    document.querySelectorAll(".section").forEach(section => section.classList.remove("warning"));
+
     document.querySelectorAll(".sub-options").forEach(subOptionsDiv => {
-        let isChecked = subOptionsDiv.querySelector("input[type='checkbox']:checked") !== null;
-        subOptionsDiv.classList.toggle("warning", !isChecked);
-        if (!isChecked) isValid = false;
+        let checkboxes = subOptionsDiv.querySelectorAll("input[type='checkbox']");
+        let isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        // Find the parent section and apply a warning if no option is selected
+        let parentSection = subOptionsDiv.closest(".section");
+        if (!isChecked) {
+            isValid = false;
+            parentSection.classList.add("warning"); // Highlight missing selection
+        }
     });
 
     if (!isValid) {
