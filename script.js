@@ -73,7 +73,8 @@ function startSecondSurvey() {
 function getLabelText(checkboxId) {
     let checkbox = document.getElementById(checkboxId);
     if (checkbox) {
-        return checkbox.parentElement.textContent.trim(); // Get the label text
+        let label = checkbox.closest("label"); // Ensure we find the label
+        return label ? label.textContent.trim() : checkboxId; // Get the label text if available
     }
     return checkboxId; // Fallback to the ID if label isn't found
 }
