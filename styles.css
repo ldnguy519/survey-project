@@ -89,8 +89,9 @@ button[type="submit"]:hover {
 }
 
 .warning {
-    border: 2px solid red;
+    border-left: 4px solid red;
     background-color: #ffe6e6;
+    padding-left: 10px;
 }
 
 /* Mobile Optimization */
