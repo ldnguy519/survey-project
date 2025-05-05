@@ -74,15 +74,15 @@ function startSecondSurvey() {
 function getLabelText(elementId) {
     let element = document.getElementById(elementId);
 
-    if (!element) return elementId; // Fallback to ID if element isn't found
+    if (!element) return elementId; // Fallback to ID if not found
 
-    // If it's a checkbox, get its associated label
+    // If it's a checkbox, get the associated label text
     if (element.type === "checkbox") {
         let label = element.closest("label");
         return label ? label.textContent.trim() : elementId;
     }
 
-    // If it's a section, get the corresponding button's text
+    // If it's a section identifier (like sec1_A), find its corresponding button text
     let button = document.querySelector(`button[onclick="toggleSubOptions('${elementId}')"]`);
     if (button) {
         return button.textContent.replace(/▶ |▼ /, "").trim(); // Clean button text
@@ -98,18 +98,18 @@ function compareSelections() {
     let matchSummary = "<h3>Matching Responses</h3>";
 
     for (let category in firstSelections) {
-        if (secondSelections[category]) {
-            let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
+    if (secondSelections[category]) {
+        let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
 
-            if (matchedSubOptions.length > 0) {
-                matchSummary += `<h4>${getLabelText(category)}</h4><ul>`;
-                matchedSubOptions.forEach(item => {
-                    matchSummary += `<li>${getLabelText(item)}</li>`;
-                });
-                matchSummary += "</ul>";
-            }
+        if (matchedSubOptions.length > 0) {
+            matchSummary += `<h4>${getLabelText(category)}</h4><ul>`;
+            matchedSubOptions.forEach(item => {
+                matchSummary += `<li>${getLabelText(item)}</li>`;
+            });
+            matchSummary += "</ul>";
         }
     }
+}
 
     document.body.innerHTML = `
         ${matchSummary}
