@@ -70,23 +70,22 @@ function startSecondSurvey() {
     location.reload();
 }
 
-// Function to retrieve the correct label text for checkboxes or sections
+// Function to retrieve the correct label text for checkboxes and sections dynamically
 function getLabelText(elementId) {
     let element = document.getElementById(elementId);
 
     if (!element) return elementId; // Fallback to ID if element isn't found
 
-    // If it's a checkbox, get its label
+    // If it's a checkbox, get its associated label
     if (element.type === "checkbox") {
         let label = element.closest("label");
         return label ? label.textContent.trim() : elementId;
     }
 
-    // If it's a section, get the nearest section title
-    let section = element.closest(".section");
-    if (section) {
-        let sectionTitle = section.querySelector(".section-title");
-        return sectionTitle ? sectionTitle.textContent.trim() : elementId;
+    // If it's a section, get the corresponding button's text
+    let button = document.querySelector(`button[onclick="toggleSubOptions('${elementId}')"]`);
+    if (button) {
+        return button.textContent.replace(/▶ |▼ /, "").trim(); // Clean button text
     }
 
     return elementId; // Default fallback
