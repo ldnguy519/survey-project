@@ -88,6 +88,11 @@ button[type="submit"]:hover {
     background: #0056b3;
 }
 
+.warning {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+}
+
 /* Mobile Optimization */
 @media screen and (max-width: 600px) {
     body {
