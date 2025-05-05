@@ -70,34 +70,37 @@ function startSecondSurvey() {
     location.reload();
 }
 
-// Function to retrieve the correct label text for checkboxes and sections dynamically
+// **Section Label Mapping**
+const sectionMap = {
+    sec1_A: "Car",
+    sec1_B: "Fruit",
+    sec1_C: "Meat",
+    sec2_D: "Clothes",
+    sec2_E: "Sports",
+    sec2_F: "Animals",
+    sec3_G: "Dinosaurs",
+    sec3_H: "Colours",
+    sec3_I: "Pokemon"
+};
+
+// **Function to retrieve correct label text**
 function getLabelText(elementId) {
     let element = document.getElementById(elementId);
 
-    if (!element) return elementId; // Fallback to ID if element isn't found
+    if (!element) {
+        return sectionMap[elementId] || elementId; // Use mapped section name or fallback to ID
+    }
 
-    // If it's a checkbox, get the associated label text
+    // If it's a checkbox, get its associated label text
     if (element.type === "checkbox") {
         let label = element.closest("label");
         return label ? label.textContent.trim() : elementId;
     }
 
-    // If it's a section identifier (like sec1_A), find its corresponding button text
-    let button = document.querySelector(`button[onclick="toggleSubOptions('${elementId}')"]`);
-    if (button) {
-        return button.textContent.replace(/▶ |▼ /, "").trim(); // Clean button text
-    }
-
-    // If it's a section, find the parent `.section-title` element
-    let section = element.closest(".section");
-    if (section) {
-        let sectionTitle = section.querySelector(".section-title");
-        return sectionTitle ? sectionTitle.textContent.trim() : elementId;
-    }
-
-    return elementId; // Default fallback
+    return sectionMap[elementId] || elementId; // Default fallback for section names
 }
 
+// **Compare Selections & Display Human-Readable Labels**
 function compareSelections() {
     let firstSelections = JSON.parse(localStorage.getItem("Person 1")) || {};
     let secondSelections = JSON.parse(localStorage.getItem("Person 2")) || {};
@@ -105,18 +108,18 @@ function compareSelections() {
     let matchSummary = "<h3>Matching Responses</h3>";
 
     for (let category in firstSelections) {
-    if (secondSelections[category]) {
-        let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
+        if (secondSelections[category]) {
+            let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
 
-        if (matchedSubOptions.length > 0) {
-            matchSummary += `<h4>${getLabelText(category)}</h4><ul>`;
-            matchedSubOptions.forEach(item => {
-                matchSummary += `<li>${getLabelText(item)}</li>`;
-            });
-            matchSummary += "</ul>";
+            if (matchedSubOptions.length > 0) {
+                matchSummary += `<h4>${getLabelText(category)}</h4><ul>`;
+                matchedSubOptions.forEach(item => {
+                    matchSummary += `<li>${getLabelText(item)}</li>`;
+                });
+                matchSummary += "</ul>";
+            }
         }
     }
-}
 
     document.body.innerHTML = `
         ${matchSummary}
