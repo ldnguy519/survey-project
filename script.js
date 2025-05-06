@@ -1,6 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Hide all sub-options initially
     document.querySelectorAll(".sub-options").forEach(div => div.style.display = "none");
+
+    // Set session storage for participant tracking
+    if (!sessionStorage.getItem("currentParticipant")) {
+        sessionStorage.setItem("currentParticipant", "Person 1");
+    }
+
+    const currentParticipant = sessionStorage.getItem("currentParticipant");
+    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)}`;
 });
 
 function toggleSubOptions(subOptionId) {
@@ -42,7 +50,7 @@ document.getElementById("survey-form").addEventListener("submit", function(event
 });
 
 function saveSurveyData() {
-    let participant = localStorage.getItem("currentParticipant") || "Person 1";
+    let participant = sessionStorage.getItem("currentParticipant") || "Person 1";
     let selectedValues = {};
 
     document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
@@ -51,14 +59,14 @@ function saveSurveyData() {
         selectedValues[parent].push(checkbox.id);
     });
 
-    localStorage.setItem(participant, JSON.stringify(selectedValues));
+    sessionStorage.setItem(participant, JSON.stringify(selectedValues));
 
     participant === "Person 1" ? startSecondSurvey() : compareSelections();
 }
 
 function startSecondSurvey() {
     alert("Person 1 survey completed! Now starting the Person 2 survey.");
-    localStorage.setItem("currentParticipant", "Person 2");
+    sessionStorage.setItem("currentParticipant", "Person 2");
     location.reload();
 }
 
@@ -91,8 +99,8 @@ function getLabelText(elementId) {
 }
 
 function compareSelections() {
-    let firstSelections = JSON.parse(localStorage.getItem("Person 1")) || {};
-    let secondSelections = JSON.parse(localStorage.getItem("Person 2")) || {};
+    let firstSelections = JSON.parse(sessionStorage.getItem("Person 1")) || {};
+    let secondSelections = JSON.parse(sessionStorage.getItem("Person 2")) || {};
 
     let matchSummary = "<h3>Matching Responses</h3>";
 
@@ -129,15 +137,6 @@ function copySummary() {
 }
 
 function resetSurvey() {
-    localStorage.clear();
+    sessionStorage.clear();
     location.reload();
 }
-
-window.addEventListener("load", function () {
-    if (!localStorage.getItem("currentParticipant")) {
-        localStorage.setItem("currentParticipant", "Person 1");
-    }
-    
-    const currentParticipant = localStorage.getItem("currentParticipant");
-    document.getElementById("survey-title").textContent = `Survey for ${currentParticipant.charAt(0).toUpperCase() + currentParticipant.slice(1)}`;
-});
