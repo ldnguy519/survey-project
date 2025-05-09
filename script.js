@@ -72,15 +72,15 @@ function startSecondSurvey() {
 
 // Section Label Mapping
 const sectionMap = {
-    sec1_A: "Car",
-    sec1_B: "Fruit",
-    sec1_C: "Meat",
-    sec2_D: "Clothes",
-    sec2_E: "Sports",
-    sec2_F: "Animals",
-    sec3_G: "Dinosaurs",
-    sec3_H: "Colours",
-    sec3_I: "Pokemon"
+    sec1_A: "Oral Sex",
+    sec1_B: "Butt Play",
+    sec1_C: "Other",
+    sec2_D: "Oral Sex",
+    sec2_E: "Butt Play",
+    sec2_F: "Other",
+    sec3_G: "Type",
+    sec3_H: "Spice",
+    sec3_I: "Finish"
 };
 
 function getLabelText(elementId) {
@@ -104,22 +104,22 @@ function compareSelections() {
 
     // Mapping section codes to readable section names
     const sectionTitleMap = {
-        sec1_A: "Car",
-        sec1_B: "Fruit",
-        sec1_C: "Meat",
-        sec2_D: "Clothes",
-        sec2_E: "Sports",
-        sec2_F: "Animals",
-        sec3_G: "Dinosaurs",
-        sec3_H: "Colours",
-        sec3_I: "Pokemon"
+        sec1_A: "Oral Sex",
+        sec1_B: "Butt Play",
+        sec1_C: "Other",
+        sec2_D: "Oral Sex",
+        sec2_E: "Butt Play",
+        sec2_F: "Other",
+        sec3_G: "Type",
+        sec3_H: "Spice",
+        sec3_I: "Finish"
     };
 
     // Mapping main section names for grouping
     const mainSections = {
-        Section1: { title: "Transportation & Food", subs: ["sec1_A", "sec1_B", "sec1_C"] },
-        Section2: { title: "Lifestyle & Interests", subs: ["sec2_D", "sec2_E", "sec2_F"] },
-        Section3: { title: "Entertainment & Preferences", subs: ["sec3_G", "sec3_H", "sec3_I"] }
+        Section1: { title: "Male Foreplay", subs: ["sec1_A", "sec1_B", "sec1_C"] },
+        Section2: { title: "Female Foreplay", subs: ["sec2_D", "sec2_E", "sec2_F"] },
+        Section3: { title: "Sex", subs: ["sec3_G", "sec3_H", "sec3_I"] }
     };
 
     let matchSummary = "<h2>Matching Responses</h2>";
