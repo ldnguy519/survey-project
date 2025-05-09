@@ -102,7 +102,7 @@ function compareSelections() {
     let firstSelections = JSON.parse(sessionStorage.getItem("Person 1")) || {};
     let secondSelections = JSON.parse(sessionStorage.getItem("Person 2")) || {};
 
-    // Mapping section codes to human-readable section titles
+    // Mapping section codes to readable section names
     const sectionTitleMap = {
         sec1_A: "Car",
         sec1_B: "Fruit",
@@ -115,18 +115,20 @@ function compareSelections() {
         sec3_I: "Pokemon"
     };
 
+    // Defining main sections with proper titles
     const mainSections = {
-        Section1: { title: "Section 1M", subs: ["sec1_A", "sec1_B", "sec1_C"] },
-        Section2: { title: "Section 2M", subs: ["sec2_D", "sec2_E", "sec2_F"] },
-        Section3: { title: "Section 3M", subs: ["sec3_G", "sec3_H", "sec3_I"] }
+        Section1: { title: "Transportation & Food", subs: ["sec1_A", "sec1_B", "sec1_C"] },
+        Section2: { title: "Lifestyle & Interests", subs: ["sec2_D", "sec2_E", "sec2_F"] },
+        Section3: { title: "Entertainment & Preferences", subs: ["sec3_G", "sec3_H", "sec3_I"] }
     };
 
     let matchSummary = "<h2>Matching Responses</h2>";
 
-    for (let section in mainSections) {
+    for (let sectionKey in mainSections) {
+        let sectionTitle = mainSections[sectionKey].title;
         let sectionMatch = "";
 
-        mainSections[section].subs.forEach(category => {
+        mainSections[sectionKey].subs.forEach(category => {
             if (firstSelections[category] && secondSelections[category]) {
                 let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
 
@@ -140,8 +142,9 @@ function compareSelections() {
             }
         });
 
+        // Only add the section heading if matches exist within it
         if (sectionMatch) {
-            matchSummary += `<h3>${mainSections[section].title}</h3>${sectionMatch}`;
+            matchSummary += `<h3>${sectionTitle}</h3>${sectionMatch}`;
         }
     }
 
