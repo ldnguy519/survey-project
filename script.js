@@ -115,7 +115,7 @@ function compareSelections() {
         sec3_I: "Pokemon"
     };
 
-    // Defining main sections with proper titles
+    // Mapping main section names for grouping
     const mainSections = {
         Section1: { title: "Transportation & Food", subs: ["sec1_A", "sec1_B", "sec1_C"] },
         Section2: { title: "Lifestyle & Interests", subs: ["sec2_D", "sec2_E", "sec2_F"] },
@@ -126,7 +126,9 @@ function compareSelections() {
 
     for (let sectionKey in mainSections) {
         let sectionTitle = mainSections[sectionKey].title;
-        let sectionMatch = "";
+        let sectionMatch = `<h3>${sectionTitle}</h3>`; // Ensure section title is displayed
+
+        let hasMatches = false; // Track if there are any matches within this section
 
         mainSections[sectionKey].subs.forEach(category => {
             if (firstSelections[category] && secondSelections[category]) {
@@ -138,13 +140,15 @@ function compareSelections() {
                         sectionMatch += `<li>${getLabelText(item)}</li>`;
                     });
                     sectionMatch += "</ul>";
+
+                    hasMatches = true; // Indicate that this section contains matches
                 }
             }
         });
 
-        // Only add the section heading if matches exist within it
-        if (sectionMatch) {
-            matchSummary += `<h3>${sectionTitle}</h3>${sectionMatch}`;
+        // Add section grouping only if there are matches
+        if (hasMatches) {
+            matchSummary += sectionMatch;
         }
     }
 
