@@ -126,7 +126,7 @@ function compareSelections() {
 
     for (let sectionKey in mainSections) {
         let sectionTitle = mainSections[sectionKey].title;
-        let sectionMatch = `<h3>${sectionTitle}</h3>`; // Ensure section title is displayed
+        let sectionMatch = `<h3>${sectionTitle}</h3>`; // Ensure section title is displayed 
 
         let hasMatches = false; // Track if there are any matches within this section
 
