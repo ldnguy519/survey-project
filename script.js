@@ -102,19 +102,46 @@ function compareSelections() {
     let firstSelections = JSON.parse(sessionStorage.getItem("Person 1")) || {};
     let secondSelections = JSON.parse(sessionStorage.getItem("Person 2")) || {};
 
-    let matchSummary = "<h3>Matching Responses</h3>";
+    // Mapping section codes to human-readable section titles
+    const sectionTitleMap = {
+        sec1_A: "Car",
+        sec1_B: "Fruit",
+        sec1_C: "Meat",
+        sec2_D: "Clothes",
+        sec2_E: "Sports",
+        sec2_F: "Animals",
+        sec3_G: "Dinosaurs",
+        sec3_H: "Colours",
+        sec3_I: "Pokemon"
+    };
 
-    for (let category in firstSelections) {
-        if (secondSelections[category]) {
-            let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
+    const mainSections = {
+        Section1: { title: "Section 1M", subs: ["sec1_A", "sec1_B", "sec1_C"] },
+        Section2: { title: "Section 2M", subs: ["sec2_D", "sec2_E", "sec2_F"] },
+        Section3: { title: "Section 3M", subs: ["sec3_G", "sec3_H", "sec3_I"] }
+    };
 
-            if (matchedSubOptions.length > 0) {
-                matchSummary += `<h4>${getLabelText(category)}</h4><ul>`;
-                matchedSubOptions.forEach(item => {
-                    matchSummary += `<li>${getLabelText(item)}</li>`;
-                });
-                matchSummary += "</ul>";
+    let matchSummary = "<h2>Matching Responses</h2>";
+
+    for (let section in mainSections) {
+        let sectionMatch = "";
+
+        mainSections[section].subs.forEach(category => {
+            if (firstSelections[category] && secondSelections[category]) {
+                let matchedSubOptions = firstSelections[category].filter(option => secondSelections[category].includes(option));
+
+                if (matchedSubOptions.length > 0) {
+                    sectionMatch += `<h4>${sectionTitleMap[category]}</h4><ul>`;
+                    matchedSubOptions.forEach(item => {
+                        sectionMatch += `<li>${getLabelText(item)}</li>`;
+                    });
+                    sectionMatch += "</ul>";
+                }
             }
+        });
+
+        if (sectionMatch) {
+            matchSummary += `<h3>${mainSections[section].title}</h3>${sectionMatch}`;
         }
     }
 
